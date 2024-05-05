@@ -47,13 +47,13 @@ function createCircleSVG(x, y, color, radius, initials, textColor) {
   // Create a prompt function
   async function promptUser() {
     // Prompt for company initials
-    const initialsAnswer = await inquirer.prompt({
+    const { initials } = await inquirer.prompt({
       type: 'input',
       name: 'initials',
       message: 'What are the company initials?',
       validate: function (input) {
         // Check if input length is exactly 3 characters
-        if (input.length === 3) {
+        if (input.length <= 3) {
           return true;
         } else {
           return 'Please enter exactly three characters.';
@@ -62,7 +62,7 @@ function createCircleSVG(x, y, color, radius, initials, textColor) {
     });
   
     // Prompt for color
-    const colorAnswer = await inquirer.prompt({
+    const  { color } = await inquirer.prompt({
       type: 'input',
       name: 'color',
       message: 'Enter a color for text (keyword or hexadecimal):',
@@ -77,7 +77,7 @@ function createCircleSVG(x, y, color, radius, initials, textColor) {
     });
   
     // Prompt for shape
-    const shapeAnswer = await inquirer.prompt({
+    const { shape } = await inquirer.prompt({
       type: 'list',
       name: 'shape',
       message: 'Choose a shape:',
@@ -85,7 +85,7 @@ function createCircleSVG(x, y, color, radius, initials, textColor) {
     });
   
     // Prompt for shape color
-    const shapeColorAnswer = await inquirer.prompt({
+    const { shapeColor } = await inquirer.prompt({
       type: 'input',
       name: 'shapeColor',
       message: 'Enter a color for the shape (keyword or hexadecimal):',
@@ -100,28 +100,21 @@ function createCircleSVG(x, y, color, radius, initials, textColor) {
     });
   
     // Based on the selected shape, create an instance and render it
-    let shape;
-    switch (shapeAnswer.shape.toLowerCase()) {
-      case 'circle':
-        shape = new Circle(/* Provide arguments */);
+    let svgString;
+    switch (shape) {
+      case 'Circle':
+        svgString = createCircleSVG(150, 100, shapeColor, 50, initials, color);
         break;
-      case 'square':
-        shape = new Square(/* Provide arguments */);
+      case 'Square':
+        svgString = createSquareSVG(100, 50, shapeColor, 100, initials, color);
         break;
-      case 'triangle':
-        shape = new Triangle(/* Provide arguments */);
+      case 'Triangle':
+        svgString = createTriangleSVG([[100, 50], [200, 50], [150, 150]], shapeColor, initials, color);
         break;
     }
     
-    fs.writeFileSync(../logo.svg, svgString);
-  
-    console.log(`SVG file "${fileName}" created successfully.`);
-  
-    // Log the company initials, text color, shape, and shape color
-    console.log('Company initials:', initialsAnswer.initials);
-    console.log('Text color:', colorAnswer.color);
-    console.log('Shape:', shapeAnswer.shape);
-    console.log('Shape color:', shapeColorAnswer.shapeColor);
+    fs.writeFileSync('./examples/logo.svg', svgString);
+
   }
   
   // Call the prompt function
