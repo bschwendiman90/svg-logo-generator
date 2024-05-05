@@ -23,6 +23,7 @@ The user will need to install the jest and inquirer npm packages in order for th
 Run the index.js in node and enter the prompts. First add the logo initials, the initials color, the shape, and the shape color. This will create the svg file in the examples folder.
 
 https://drive.google.com/file/d/1cc3VkZu_7Y3VTR9KRkhjdBnELRLcOrt8/view
+https://github.com/bschwendiman90/svg-logo-generator
 
 ## License
 
